@@ -3,7 +3,6 @@ import 'package:emoji_picker_flutter/src/category_emoji.dart';
 import 'package:emoji_picker_flutter/src/emoji_picker_internal_utils.dart';
 import 'package:emoji_picker_flutter/src/emoji_skin_tones.dart';
 import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
-import 'package:emoji_picker_flutter/src/triangle_shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -112,13 +111,13 @@ class _VerticalEmojiPickerViewState extends State<VerticalEmojiPickerView>
                           categoryEmoji.category.name.toUpperCase(),
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.7),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                             letterSpacing: 0.7,
                           ),
                         )
                       : const SizedBox(),
-                  const SizedBox(height: 15),
+                  SizedBox(height: config.categorySpacing / 2),
                   GestureDetector(
                     onTap: _closeSkinToneDialog,
                     child: GridView.builder(
@@ -191,16 +190,17 @@ class _VerticalEmojiPickerViewState extends State<VerticalEmojiPickerView>
     return FittedBox(
       fit: BoxFit.fill,
       child: Stack(children: [
-        emoji.hasSkinTone && showSkinToneIndicator
-            ? Positioned(
-                bottom: 0,
-                right: 0,
-                child: CustomPaint(
-                  size: const Size(8, 8),
-                  painter: TriangleShape(config.skinToneIndicatorColor),
-                ),
-              )
-            : Container(),
+        //TODO:(sam) implement skin tone
+        // emoji.hasSkinTone && showSkinToneIndicator
+        //     ? Positioned(
+        //         bottom: 0,
+        //         right: 0,
+        //         child: CustomPaint(
+        //           size: const Size(8, 8),
+        //           painter: TriangleShape(config.skinToneIndicatorColor),
+        //         ),
+        //       )
+        //     : Container(),
         Text(
           emoji.emoji,
           textScaleFactor: 1.0,
@@ -223,7 +223,8 @@ class _VerticalEmojiPickerViewState extends State<VerticalEmojiPickerView>
     if (config.buttonMode == ButtonMode.MATERIAL) {
       return TextButton(
         onPressed: onPressed,
-        onLongPress: onLongPressed,
+        //TODO(sam): implement skin tone
+        // onLongPress: onLongPressed,
         child: child,
         style: ButtonStyle(
           padding: MaterialStateProperty.all(EdgeInsets.zero),
