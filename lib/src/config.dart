@@ -26,10 +26,11 @@ class Config {
       this.showRecentsTab = true,
       this.recentsLimit = 28,
       this.noRecentsText = 'No Recents',
-      this.noRecentsStyle =
-          const TextStyle(fontSize: 20, color: Colors.black26),
+      this.noRecentsStyle = const TextStyle(fontSize: 20, color: Colors.black26),
       this.tabIndicatorAnimDuration = kTabScrollDuration,
       this.categoryIcons = const CategoryIcons(),
+      this.padding = const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      this.categorySpacing = 40,
       this.buttonMode = ButtonMode.MATERIAL});
 
   /// Number of emojis per row
@@ -44,6 +45,9 @@ class Config {
 
   /// Horizontal spacing between emojis
   final double horizontalSpacing;
+
+  /// The space between each category in vertical picker view
+  final double categorySpacing;
 
   /// The initial [Category] that will be selected
   /// This [Category] will have its button in the bottombar darkened
@@ -100,6 +104,9 @@ class Config {
   /// Change between Material and Cupertino button style
   final ButtonMode buttonMode;
 
+  /// Padding for the vertical list picker view
+  final EdgeInsetsGeometry padding;
+
   /// Get Emoji size based on properties and screen width
   double getEmojiSize(double width) {
     final maxSize = width / columns;
@@ -155,7 +162,9 @@ class Config {
         other.noRecentsStyle == noRecentsStyle &&
         other.tabIndicatorAnimDuration == tabIndicatorAnimDuration &&
         other.categoryIcons == categoryIcons &&
-        other.buttonMode == buttonMode;
+        other.buttonMode == buttonMode &&
+        other.categorySpacing == categorySpacing &&
+        other.padding == padding;
   }
 
   @override
@@ -180,5 +189,7 @@ class Config {
       noRecentsStyle.hashCode ^
       tabIndicatorAnimDuration.hashCode ^
       categoryIcons.hashCode ^
-      buttonMode.hashCode;
+      buttonMode.hashCode ^
+      categorySpacing.hashCode ^
+      padding.hashCode;
 }

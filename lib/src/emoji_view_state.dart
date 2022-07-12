@@ -8,6 +8,7 @@ class EmojiViewState {
     this.categoryEmoji,
     this.onEmojiSelected,
     this.onBackspacePressed,
+    this.searchEmoji,
   );
 
   /// List of all category including their emoji
@@ -18,4 +19,7 @@ class EmojiViewState {
 
   /// Callback when pressed on backspace
   final OnBackspacePressed? onBackspacePressed;
+
+  /// Pass in list of emoji that was searchec for
+  final CategoryEmoji? searchEmoji;
 }

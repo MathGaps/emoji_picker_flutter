@@ -1,10 +1,11 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:emoji_picker_flutter/src/category_emoji.dart';
 import 'package:emoji_picker_flutter/src/config.dart';
-import 'package:emoji_picker_flutter/src/default_emoji_picker_view.dart';
 import 'package:emoji_picker_flutter/src/emoji.dart';
 import 'package:emoji_picker_flutter/src/emoji_picker_internal_utils.dart';
 import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
 import 'package:emoji_picker_flutter/src/recent_emoji.dart';
+import 'package:emoji_picker_flutter/src/vertical_emoji_picker_view.dart';
 import 'package:flutter/material.dart';
 
 /// All the possible categories that [Emoji] can be put into
@@ -37,6 +38,9 @@ enum Category {
 
   /// Flag emojis
   FLAGS,
+
+  /// Searched emojis
+  SEARCHED,
 }
 
 /// Extension on Category enum to get its name
@@ -62,6 +66,8 @@ extension CategoryExtension on Category {
         return 'symbols';
       case Category.FLAGS:
         return 'flags';
+      case Category.SEARCHED:
+        return 'searched';
     }
   }
 }
@@ -102,6 +108,7 @@ class EmojiPicker extends StatefulWidget {
     this.onBackspacePressed,
     this.config = const Config(),
     this.customWidget,
+    this.searchParams,
   }) : super(key: key);
 
   /// Custom widget
@@ -116,6 +123,9 @@ class EmojiPicker extends StatefulWidget {
   /// Config for customizations
   final Config config;
 
+  /// Displays emoji that matches the search, an empty string is treated as a null value
+  final String? searchParams;
+
   @override
   EmojiPickerState createState() => EmojiPickerState();
 }
@@ -125,6 +135,8 @@ class EmojiPickerState extends State<EmojiPicker> {
   final List<CategoryEmoji> _categoryEmoji = List.empty(growable: true);
   List<RecentEmoji> _recentEmoji = List.empty(growable: true);
   late Future<void> _updateEmojiFuture;
+
+  CategoryEmoji? searchEmoji;
 
   // Prevent emojis to be reloaded with every build
   bool _loaded = false;
@@ -153,6 +165,26 @@ class EmojiPickerState extends State<EmojiPicker> {
       _loaded = false;
       _updateEmojiFuture = _updateEmojis();
     }
+
+    if (oldWidget.searchParams != widget.searchParams) {
+      // search for emojis
+      Future.delayed(Duration.zero, () async {
+        final searchParams = widget.searchParams;
+        if (searchParams == null || searchParams == '') {
+          setState(() {
+            searchEmoji = null;
+          });
+          return;
+        }
+
+        searchEmoji = CategoryEmoji(
+          Category.SEARCHED,
+          await EmojiPickerUtils().searchEmoji(searchParams),
+        );
+
+        setState(() {});
+      });
+    }
     super.didUpdateWidget(oldWidget);
   }
 
@@ -180,11 +212,12 @@ class EmojiPickerState extends State<EmojiPicker> {
       _categoryEmoji,
       _getOnEmojiListener(),
       widget.onBackspacePressed,
+      searchEmoji,
     );
 
     // Build
     return widget.customWidget == null
-        ? DefaultEmojiPickerView(widget.config, state)
+        ? VerticalEmojiPickerView(widget.config, state)
         : widget.customWidget!(widget.config, state);
   }
 
