@@ -1,10 +1,11 @@
 name: emoji_picker_flutter
 description: A Flutter package that provides an Emoji picker widget with 1500+ emojis in 8 categories.
-version: 1.1.2
+version: 1.3.1
 homepage: https://github.com/Fintasys/emoji_picker_flutter
+publish_to: https://pub.tutero.dev
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.4.0 <4.0.0"
   flutter: ">=2.0.1"
 
 dependencies:
@@ -12,6 +13,7 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.6
   platform: ^3.1.0
+  web: ^1.1.0
 
 dev_dependencies:
   test: ^1.17.12
