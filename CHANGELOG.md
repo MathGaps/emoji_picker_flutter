@@ -1,3 +1,6 @@
+## 1.3.1
+- Replace dart:html with package:web in the web plugin so consumers compile under dart2wasm (flutter build web --wasm)
+
 ## 1.1.2
 - Fix a issue with macos platform 👨‍🔧
 - Close Skin-Tone dialog on several other timings
