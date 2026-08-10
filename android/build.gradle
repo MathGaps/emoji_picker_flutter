@@ -2,14 +2,14 @@ group 'com.fintasys.emoji_picker_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.5.20'
+    ext.kotlin_version = '1.9.24'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:8.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -17,7 +17,7 @@ buildscript {
 rootProject.allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -25,16 +25,33 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    // Required by AGP 8: the namespace used to live in the manifest's `package`
+    // attribute, which AGP no longer reads.
+    namespace 'com.fintasys.emoji_picker_flutter'
+    compileSdk 34
+
+    // Kotlin compiles at the toolchain's JVM target (17 on current Flutter);
+    // javac must match or Gradle rejects the variant as inconsistent.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
-        minSdkVersion 16
+        minSdk 21
     }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // PaintCompat.hasGlyph, used by EmojiPickerFlutterPlugin.
+    implementation 'androidx.core:core:1.13.1'
 }

@@ -1,3 +1,7 @@
+## 1.3.2
+- Android: declare the AGP 8 `namespace` (was only the removed manifest `package` attribute), so consumers on AGP 8 configure instead of failing with "Namespace not specified"
+- Android: compile javac at Java 17 to match Kotlin's jvmTarget, drop dead jcenter repos, raise compileSdk 30 -> 34 / minSdk 16 -> 21, and depend on androidx.core explicitly for PaintCompat
+
 ## 1.3.1
 - Replace dart:html with package:web in the web plugin so consumers compile under dart2wasm (flutter build web --wasm)
 
